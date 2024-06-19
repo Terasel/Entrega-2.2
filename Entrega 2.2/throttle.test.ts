@@ -24,6 +24,17 @@ describe('mòdul throttle', () => {
         throttled();
         expect(callback).toBeCalledTimes(1);
     });
+    test("la funció guarda les crides a aquesta abans d'un interval complet i es torna a executar quan s'acaba l'interval", () => {
+        const callback = jest.fn();
+        const throttled = throttle(callback, 500);
+        throttled();
+        throttled();
+        jest.advanceTimersByTime(50);
+        throttled();
+        throttled();
+        jest.advanceTimersByTime(450);
+        expect(callback).toBeCalledTimes(2);
+    });
     test("la funció es torna a executar després d'un interval complet, només una vegada", () => {
         const callback = jest.fn();
         const throttled = throttle(callback, 500);
